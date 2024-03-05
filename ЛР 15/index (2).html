@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .slider {
+      border-radius: 5px;
+      background: #E0E0E0;
+      background: linear-gradient(left top, #E0E0E0, #EEEEEE);
+      width: 310px;
+      height: 15px;
+      margin: 5px;
+    }
+
+    .thumb {
+      width: 10px;
+      height: 25px;
+      border-radius: 3px;
+      position: relative;
+      left: 10px;
+      top: -5px;
+      background: blue;
+      cursor: pointer;
+    }
+
+    .selected {
+      background: #0f0;
+    }
+
+    li {
+      cursor: pointer;
+    }
+
+    .color-squares {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    .square {
+      width: 100px;
+      height: 100px;
+      background-color: red;
+      cursor: pointer;
+    }
+
+    /* Стиль для контейнера бесконечной прокрутки */
+    .infinite-scroll-container {
+      width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    /* Стиль для бесконечного контента */
+    .infinite-content {
+      animation: scroll 15s linear infinite;
+      display: inline-block;
+      white-space: nowrap;
+    }
+img
+{
+width: 25%;
+height: 255;
+}
+    /* Анимация бесконечной прокрутки */
+    @keyframes scroll {
+      0% {
+        transform: translateX(100%);
+      }
+
+      100% {
+        transform: translateX(-100%);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="slider" class="slider">
+    <div class="thumb"></div>
+  </div>
+
+  <ul id="ul">
+    <li>Кристофер Робин</li>
+    <li>Винни Пух</li>
+    <li>Тигра</li>
+    <li>Кенга</li>
+    <li>Кролик. Просто Кролик.</li>
+  </ul>
+  <script>
+    function checkPhoneKey(key) {
+      return (key >= '0' && key <= '9') || key == '+' || key == '(' || key == ')' || key == '-' ||
+        key == 'ArrowLeft' || key == 'ArrowRight' || key == 'Delete' || key == 'Backspace';
+    }
+    </script>
+    <input onkeydown="return checkPhoneKey(event.key)" placeholder="Введите телефон" type="tel">
+  <div class="color-squares">
+    <div class="square"></div>
+  
+  </div>
+
+  <!-- Бесконечная прокрутка -->
+  <div class="infinite-scroll-container">
+    <div class="infinite-content">
+      
+      <img src="1.png" alt="">
+      <img src="2.png" alt="">
+      <img src="3.png" alt="">
+      <img src="1.png" alt="">
+      <img src="2.png" alt="">
+      <img src="3.png" alt="">
+    </div>
+  </div>
+
+  <script>
+    // Изменение цвета квадратов при наведении с использованием JavaScript
+    const squares = document.querySelectorAll('.square');
+
+    squares.forEach(square => {
+      square.addEventListener('mouseover', () => {
+        square.style.backgroundColor = 'blue';
+      });
+
+      square.addEventListener('mouseout', () => {
+        square.style.backgroundColor = 'red';
+      });
+    });
+
+    let thumb = slider.querySelector('.thumb');
+
+    thumb.onmousedown = function(event) {
+      event.preventDefault(); // предотвратить запуск выделения (действие браузера)
+
+      let shiftX = event.clientX - thumb.getBoundingClientRect().left;
+
+      document.addEventListener('mousemove', onMouseMove);
+      document.addEventListener('mouseup', onMouseUp);
+
+      function onMouseMove(event) {
+        let newLeft = event.clientX - shiftX - slider.getBoundingClientRect().left;
+
+        if (newLeft < 0) {
+          newLeft = 0;
+        }
+        let rightEdge = slider.offsetWidth - thumb.offsetWidth;
+        if (newLeft > rightEdge) {
+          newLeft = rightEdge;
+        }
+
+        thumb.style.left = newLeft + 'px';
+      }
+
+      function onMouseUp() {
+        document.removeEventListener('mouseup', onMouseUp);
+        document.removeEventListener('mousemove', onMouseMove);
+      }
+
+    };
+
+    thumb.ondragstart = function() {
+      return false;
+    };
+
+    ul.onclick = function(event) {
+      if (event.target.tagName != "LI") return;
+
+      if (event.ctrlKey || event.metaKey) {
+        toggleSelect(event.target);
+      } else {
+        singleSelect(event.target);
+      }
+
+    }
+
+    ul.onmousedown = function() {
+      return false;
+    };
+
+    function toggleSelect(li) {
+      li.classList.toggle('selected');
+    }
+
+    function singleSelect(li) {
+      let selected = ul.querySelectorAll('.selected');
+      for (let elem of selected) {
+        elem.classList.remove('selected');
+      }
+      li.classList.add('selected');
+    }
+  </script>
+
+</body>
+
+</html>

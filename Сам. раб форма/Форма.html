@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация</title>
+    <link rel="stylesheet" href="/style.css">
+
+</head>
+
+<body class="flex">
+
+    <form action="process_registration.php" method="post">
+        <div class="form">
+            <label for="name">Имя:</label>
+            <input type="text" id="name" name="name" required><br>
+        </div>
+        <div class="form">
+            <label for="email">Эл. почта:</label>
+            <input type="email" id="email" name="email" required><br>
+        </div>
+        <div class="form">
+            <label for="dob-day">Дата рождения:</label>
+            <input type="number" id="dob-day" name="dob-day" placeholder="День" min="1" max="31" required>
+
+            <select id="dob-month" name="dob-month" required>
+                <option value="" disabled selected hidden>Месяц</option>
+                <option value="01">Январь</option>
+                <option value="02">Февраль</option>
+                <option value="03">Март</option>
+                <option value="04">Апрель</option>
+                <option value="05">Май</option>
+                <option value="06">Июнь</option>
+                <option value="07">Июль</option>
+                <option value="08">Август</option>
+                <option value="09">Сентябрь</option>
+                <option value="10">Октябрь</option>
+                <option value="11">Ноябрь</option>
+                <option value="12">Декабрь</option>
+            </select>
+
+            <input type="number" id="dob-year" name="dob-year" placeholder="Год" min="1900" max="2024" required><br>
+        </div>
+        <div style="flex-wrap: nowrap; display: flex;">
+            <button type="submit">Зарегистрироваться</button>
+            <button id="clearCookieButton" style="width: 100px; margin-left: 10px;">Очистить cookie</button>
+            <button id="clearLocalStorageButton" style="width: 100px; margin-left: 10px;">Очистить Local
+                Storage</button>
+
+        </div>
+    </form>
+
+    <div id="output"></div>
+
+    <script>
+        function setCookie(name, value, days) {
+            var expires = "";
+            if (days) {
+                var date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                expires = "; expires=" + date.toUTCString();
+            }
+            document.cookie = name + "=" + value + expires + "; path=/";
+        }
+        function getCookie(name) {
+            var nameEQ = name + "=";
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i];
+                while (cookie.charAt(0) == ' ') {
+                    cookie = cookie.substring(1, cookie.length);
+                }
+                if (cookie.indexOf(nameEQ) == 0) {
+                    return cookie.substring(nameEQ.length, cookie.length);
+                }
+            }
+            return null;
+        }
+        function clearCookie(name) {
+            document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+        }
+        function displayDataFromCookie() {
+            var nameValue = getCookie('name');
+            var emailValue = getCookie('email');
+            var dobDayValue = getCookie('dob-day');
+            var dobMonthValue = getCookie('dob-month');
+            var dobYearValue = getCookie('dob-year');
+
+            var output = "Имя: " + nameValue + "<br>";
+            output += "Эл. почта: " + emailValue + "<br>";
+            output += "Дата рождения: " + dobDayValue + " " + dobMonthValue + " " + dobYearValue + "<br>";
+
+            document.getElementById('output').innerHTML = output;
+        }
+        document.querySelector('form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            var nameValue = document.getElementById('name').value;
+            var emailValue = document.getElementById('email').value;
+            var dobDayValue = document.getElementById('dob-day').value;
+            var dobMonthValue = document.getElementById('dob-month').value;
+            var dobYearValue = document.getElementById('dob-year').value;
+            setCookie('name', nameValue, 7);
+            setCookie('email', emailValue, 7);
+            setCookie('dob-day', dobDayValue, 7);
+            setCookie('dob-month', dobMonthValue, 7);
+            setCookie('dob-year', dobYearValue, 7);
+            displayDataFromCookie();
+        });
+        window.addEventListener('load', function () {
+            displayDataFromCookie();
+        });
+        document.getElementById('clearCookieButton').addEventListener('click', function () {
+            clearCookie('name');
+            clearCookie('email');
+            clearCookie('dob-day');
+            clearCookie('dob-month');
+            clearCookie('dob-year');
+            displayDataFromCookie();
+        });
+        function saveDataToLocalStorage(data) {
+            localStorage.setItem('userData', JSON.stringify(data));
+        }
+        function loadDataFromLocalStorage() {
+            var userDataJsonString = localStorage.getItem('userData');
+            if (userDataJsonString) {
+                var userData = JSON.parse(userDataJsonString);
+                displayData(userData);
+            }
+        }
+        function displayData(userData) {
+            var output = "Имя: " + userData.name + "<br>";
+            output += "Эл. почта: " + userData.email + "<br>";
+            output += "Дата рождения: " + userData.dob.day + " " + userData.dob.month + " " + userData.dob.year + "<br>";
+            document.getElementById('output').innerHTML = output;
+        }
+        function clearLocalStorage() {
+            localStorage.removeItem('userData');
+            document.getElementById('output').innerHTML = "";
+        }
+        document.querySelector('form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            var nameValue = document.getElementById('name').value;
+            var emailValue = document.getElementById('email').value;
+            var dobDayValue = document.getElementById('dob-day').value;
+            var dobMonthValue = document.getElementById('dob-month').value;
+            var dobYearValue = document.getElementById('dob-year').value;
+
+            var userData = {
+                name: nameValue,
+                email: emailValue,
+                dob: {
+                    day: dobDayValue,
+                    month: dobMonthValue,
+                    year: dobYearValue
+                }
+            };
+            saveDataToLocalStorage(userData);
+            displayData(userData);
+        });
+        window.addEventListener('load', function () {
+            loadDataFromLocalStorage();
+        });
+        document.getElementById('clearLocalStorageButton').addEventListener('click', function () {
+            clearLocalStorage();
+        });
+    </script>
+
+
+</body>
+
+</html>

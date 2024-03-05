@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Валидация форм и регулярные выражения</title>
+</head>
+<body>
+    <h3>Валидация пользовательских форм</h3>
+    <form id="userForm" style="display: flex; flex-direction: column;align-items: start;">
+        <label for="name">Имя:</label>
+        <br>
+        <input type="text" id="name" required style="border-radius: 20px;">
+        <br>
+        <label for="email">Email:</label>
+        <br>
+        <input type="email" id="email" required style="border-radius: 20px;">
+        <br>
+        <label for="password">Пароль:</label>
+        <br>
+        <input type="password" id="password" required style="border-radius: 20px;">
+        <br>
+        <button type="submit">Отправить</button>
+    </form>
+
+    <h3>Регулярные выражения и методы String</h3>
+    <textarea id="textInput" rows="4" cols="50" placeholder="Введите текст для анализа на email-адреса..." style="border-radius: 5px;"></textarea>
+    <br>
+    <button onclick="analyzeText()" >Анализ</button>
+    <h2>Результат:</h2>
+    <p id="result"></p>
+
+    <script>
+        // Задание 1: Валидация пользовательской формы
+        const form = document.getElementById("userForm");
+        form.addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const nameInput = document.getElementById("name");
+            const emailInput = document.getElementById("email");
+            const passwordInput = document.getElementById("password");
+
+            if (nameInput.value === "") {
+                alert("Введите ваше имя.");
+                nameInput.focus();
+                return;
+            }
+
+            if (emailInput.value === "" || !isValidEmail(emailInput.value)) {
+                alert("Введите корректный email.");
+                emailInput.focus();
+                return;
+            }
+
+            if (passwordInput.value === "" || passwordInput.value.length < 6) {
+                alert("Пароль должен содержать не менее 6 символов.");
+                passwordInput.focus();
+                return;
+            }
+
+            alert("Форма отправлена успешно!");
+
+            function isValidEmail(email) {
+                const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+                return emailPattern.test(email);
+            }
+        });
+
+        // Задание 2: Регулярные выражения и методы String
+        function analyzeText() {
+            const textInput = document.getElementById("textInput").value;
+            const emailPattern = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}/g;
+
+            const emails = textInput.match(emailPattern);
+
+            let result = "Email-адреса в тексте:\n";
+            if (emails) {
+                result += emails.join("\n");
+            } else {
+                result += "Отсутствуют.";
+            }
+
+            document.getElementById("result").textContent = result;
+        }
+    </script>
+</body>
+</html>

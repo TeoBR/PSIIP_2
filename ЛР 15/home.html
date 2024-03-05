@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <style>
+    #rect{
+        width:50px;
+        height:50px;
+        background-color:rgb(154, 154, 166);
+    }
+    body * {
+    margin: 10px;
+    border: 1px solid blue;
+  }
+
+    </style>
+</head>
+<body>
+<input value="Нажми меня" onclick="alert('Клик')" type="button">
+<script>
+    function countRabbits() {
+      for(let i=1; i<=3; i++) {
+        alert("Кролик номер " + i);
+      }
+    }
+  </script>
+  
+  <input type="button" onclick="countRabbits()" value="Считать кроликов!">
+
+    <input id="elem" type="button" value="Нажми меня"/>
+
+    <script>
+      function handler1() {
+        alert('Спасибо!');
+      };
+    
+      function handler2() {
+        alert('Спасибо ещё раз!');
+      }
+      elem.onclick = () => alert("Привет");
+      elem.addEventListener("click", handler1); // Спасибо!
+      elem.addEventListener("click", handler2); // Спасибо ещё раз!
+    </script>
+    <form onclick="alert('form')">FORM
+        <div onclick="alert('div')">DIV
+          <p onclick="alert('p')">P</p>
+        </div>
+      </form>
+      <body onclick="alert(`сюда всплытие не дойдёт`)">
+        <button onclick="event.stopPropagation()">Кликни меня</button>
+      </body>
+            
+   
+</body>
+</html>

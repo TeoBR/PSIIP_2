@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script type="text/javascript">
+        var c = 0;
+        var t;
+        var timer_is_on = 0;
+
+        function timedCount() {
+            document.getElementById('txt').value = c;
+            c = c + 1;
+            t = setTimeout("timedCount()", 1000);
+        }
+
+        function doTimer() {
+            if (!timer_is_on) {
+                timer_is_on = 1;
+                timedCount();
+            }
+        }
+
+        function go() {
+            document.location.assign('http://www.wisdomweb.ru');
+        }
+
+        function dispMes(event) {
+            document.getElementById('par').style.display = 'block';
+            document.getElementById('resultx').innerHTML = event.clientX;
+            document.getElementById('resulty').innerHTML = event.clientY;
+        }
+
+        function start() {
+            document.getElementById('par1').style.color = 'red';
+        }
+
+        function stop() {
+            document.getElementById('par1').style.color = 'black';
+        }
+
+        function timeMsg() {
+            var t = setTimeout("alertMsg()", 3000);
+        }
+
+        function alertMsg() {
+            alert("Привет");
+        }
+
+        function startTime() {
+            var today = new Date();
+            var h = today.getHours();
+            var m = today.getMinutes();
+            var s = today.getSeconds();
+            // добавить нуль перед числами <10
+            m = checkTime(m);
+            s = checkTime(s);
+            document.getElementById('txt').innerHTML = h + ":" + m + ":" + s;
+            t = setTimeout('startTime()', 500);
+        }
+
+        function checkTime(i) {
+            if (i < 10) {
+                i = "0" + i;
+            }
+            return i;
+        }
+
+        // Новые функции для задания
+        function changeTextColorToGreen() {
+            document.getElementById('par1').style.color = 'green';
+        }
+
+        function changeTextColorToRed() {
+            document.getElementById('par2').style.color = 'red';
+        }
+
+        function resetTextColors() {
+            document.getElementById('par1').style.color = 'black';
+            document.getElementById('par2').style.color = 'black';
+        }
+
+        function drawGreenBorder() {
+            document.getElementById('par1').style.border = '1px solid green';
+            document.getElementById('par2').style.border = '1px solid green';
+        }
+
+        function drawRedBorder() {
+            document.getElementById('par1').style.border = '1px solid red';
+            document.getElementById('par2').style.border = '1px solid red';
+        }
+
+        // Отображение окна оповещения при загрузке и закрытии документа
+        window.onload = function() {
+            alert("Добро пожаловать в задание 1");
+        }
+
+        window.onbeforeunload = function() {
+            return "Вы покидаете задание 1";
+        }
+    </script>
+
+    <style type='text/css'>
+        #block {
+            height: 360px;
+            width: auto;
+            border: 2px dotted #f00;
+        }
+
+        p {
+            text-indent: 40px;
+            padding-left: 20px;
+        }
+
+        #par1 {
+            color: black;
+            cursor: pointer;
+        }
+
+        #par2 {
+            color: black;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body onclick='dispMes(event)'>
+    <input type='button' value='Перейти на главную страницу нашего сайта' onclick='go()' />
+
+    <div id='block'>
+        <p>Щелкните в любом месте правого окна редактора.</p>
+        <p id='par' style='display:none;'>Щелчок мыши был произведен по координатам:
+            <b><span id='resultx'> </span></b> пикс. по горизонтали от левой границы окна и <br/>
+            <b><span id='resulty'> </span></b> пикс. по вертикали от верхней границы окна.</p>
+    </div>
+
+    <p id='par1' onmouseover='start()' onmouseout='stop()'>Наведите на меня курсор мыши.</p>
+    <p id='par2' onmouseover='start()' onmouseout='stop()'>Наведите на меня курсор мыши.</p>
+
+    <form>
+        <input type="button" value="Показать сигнальное окно через 3 секунды" onClick="timeMsg()" />
+    </form>
+
+    <div id="txt"></div>
+
+    <!-- Кнопки для выполнения новых задач -->
+    <input type="button" value="Зеленый текст" onclick="changeTextColorToGreen()" id="but1" />
+    <input type="button" value="Красный текст" onclick="changeTextColorToRed()" id="but2" />
+    <input type="button" value="Зеленая граница" onclick="drawGreenBorder()" id="but3" />
+    <input type="button" value="Красная граница" onclick="drawRedBorder()" id="but4" />
+    
+    <!-- Код для отсчета -->
+    <form>
+        <input type="button" value="Начать отсчет!" onClick="doTimer()">
+        <input type="text" id="txt">
+    </form>
+    <p>Щелкните на кнопке выше. Поле ввода начнет отсчет до бесконечности, начиная с 0.</p>
+</body>
+</html>

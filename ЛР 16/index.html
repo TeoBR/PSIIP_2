@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="styles.css">
+    <title>Извлечение данных из формы</title>
+</head>
+<body>
+    <h1>Лабараторная № 16</h1>
+    <form id="myForm">
+        <div class="personal-data">
+            <div class="personal-data block left-block">
+    
+                <label for="имя">Имя:</label>
+                <input class="personal-data-input" type="text" id="имя" name="имя"><br><br>
+        
+                <label for="login">Логин:</label>
+                <input class="personal-data-input" type="text" id="login" name="login"><br><br>
+                
+            </div>
+            
+            <div class="personal-data block right-block">
+    
+                <label for="email">Email:</label>
+                <input class="personal-data-input" type="email" id="email" name="email"><br><br>
+                
+                <label for="пароль">Ваш пароль:</label>
+                <input class="personal-data-input" type="password" id="пароль" name="пароль"><br><br>
+            </div>
+        </div>
+
+        <label>Выберите ваш пол:</label><br>
+        <input type="radio" id="мужской" name="пол" value="Мужской">
+        <label for="мужской">Мужской</label><br>
+        <input type="radio" id="женский" name="пол" value="Женский">
+        <label for="женский">Женский</label><br><br>
+
+        <input type="checkbox" id="учеба" name="особенности" value="Любит учиться">
+        <label for="учеба">Люблю учиться</label><br>
+        <input type="checkbox" id="трудолюбие" name="особенности" value="Трудолюбивый">
+        <label for="трудолюбие">Я трудолюбивый</label><br>
+        <input type="checkbox" id="образование name="особенности" value="Высшее образование">
+        <label for="образование"> Имею высшее образование</label><br>
+        <input type="checkbox" id="кабачки" name="особенности" value="Ненавидит кабачки">
+        <label for="кабачки"> Не люблю кабачки</label><br><br>
+        <textarea name="комментарий" id="комментарий" cols="30" rows="10"></textarea> <br> <br>
+
+        <label for="город">Выберите ваш город:</label><br>
+        <select id="город" name="город">
+            <option value="Минск">Минск</option>
+            <option value="Осака">Осака</option>
+            <option value="Майами">Майами</option>
+            <option value="Тэгу">Тэгу</option>
+        </select><br><br>
+
+        <input type="submit" value="Отправить">
+    </form>
+
+    <!-- Элемент для вывода данных на HTML-странице -->
+    <div id="output"></div>
+
+    <script>
+        // Получить форму по ее ID
+        const form = document.getElementById("myForm");
+
+        // Элемент для вывода данных на HTML-странице
+        const outputElement = document.getElementById("output");
+
+        // Добавить обработчик события на отправку формы
+        form.addEventListener("submit", function (event) {
+            event.preventDefault(); // Предотвратить стандартное действие формы (отправку)
+
+            // Получить значения полей формы
+            const имя = document.getElementById("имя").value;
+            const login = document.getElementById("login").value;
+            const email = document.getElementById("email").value;
+            const пароль = document.getElementById("пароль").value;
+            const пол = document.querySelector('input[name="пол"]:checked').value;
+            const город = document.getElementById("город").value;
+            const текстареа = document.querySelector("#комментарий").value;
+            const особенности = [];
+            const особенностиCheckbox = document.querySelectorAll('input[name="особенности"]:checked');
+            
+            особенностиCheckbox.forEach(function (checkbox) {
+                особенности.push(checkbox.value);
+            });
+
+            // Вывести данные на HTML-странице
+            const выводHTML = `
+                <h2>Полученные данные:</h2>
+                <p>Имя: ${имя}</p>
+                <p>Логин: ${login}</p>
+                <p>Email: ${email}</p>
+                <p>Пароль: ${пароль}</p>
+                <p>Пол: ${пол}</p>
+                <p>Город: ${город}</p>
+                <p>Текст из текстареа: ${текстареа}</p>
+                <p>Особенности: ${особенности.join(", ")}</p>
+            `;
+            outputElement.innerHTML = выводHTML;
+
+            // Вывести данные в диалоговое окно
+            const выводAlert = `
+                Полученные данные:
+                Имя: ${имя}
+                Логин: ${login}
+                Email: ${email}
+                Пароль: ${пароль}
+                Пол: ${пол}
+                Город: ${город}
+                Текст из текстареа: ${текстареа}
+                Особенности: ${особенности.join(", ")}
+            `;
+            alert(выводAlert);
+        });
+    </script>
+</body>
+</html>

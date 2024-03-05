@@ -1,0 +1,13 @@
+.personal-data{
+    display: flex;
+    width: 50vw;
+
+}
+
+.block{
+    display: flex;
+    flex-direction: column;
+}
+.personal-data-input{
+    width: 40%;
+}
